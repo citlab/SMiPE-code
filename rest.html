@@ -1,0 +1,97 @@
+<html>
+<head>
+<script src='https://code.jquery.com/jquery-3.2.0.min.js'
+	integrity='sha256-JAW99MJVpJBGcbzEuXk4Az05s/XyDdBomFqNlM3ic+I='
+	crossorigin='anonymous'></script>
+<script
+	src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.bundle.min.js'
+	crossorigin='anonymous'></script>
+<script
+	src='https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js'></script>
+<script
+	src='https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js'></script>
+<link rel='stylesheet'
+	href='https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css'>
+
+<script>
+
+function executeAjaxHelper(buttonId, url) {
+	$(buttonId).click(function() {
+		var result = $('#result');
+		var button = $(this);
+		var spinner = button.find(".spinner")
+		spinner.show();
+		$.ajax({
+			  url: url,
+			  data : {},
+			  type: "GET",
+			    success: function( html ) {
+			    	result.html(html)
+			    },
+			    error: function( xhr, status, errorThrown ) {
+			    },
+			    complete: function( ) {
+			    	spinner.hide();
+			    },
+			});
+	});
+}
+$(document).ready(function() {
+	executeAjaxHelper('#createSimQualReport', "/simqual");
+	executeAjaxHelper('#simulationSuite', "/simulationSuite");
+	executeAjaxHelper('#simulationSuiteDummy', "/simulationSuite?dummy");
+	
+});
+</script>
+<style>
+body {
+	font-family: Arial;
+}
+
+.button {
+	background-color: red;
+	color: white;
+	border-radius: 4px;
+	margin-right: 15px;
+	padding: 3px 8px;
+	display: inline-block;
+}
+a.button {
+	text-decoration: none;
+}
+.spinner {
+	display: none;
+}
+
+.clickable {
+	cursor: pointer;
+}
+</style>
+</head>
+<body>
+
+	<h1>Estimator Util</h1>
+	<h4>Links</h4>
+	<div>
+		<a class="button clickable" href="/jobs" target="_blank"> Job Index (new window)</a>
+	</div>
+	
+	<h4>Actions</h4>
+	<div>
+		<a class="button clickable" id="simulationSuite"> Simulation Suite / Weights Training
+			<span class="spinner">Loading...</span>
+		</a>
+		<a class="button clickable" id="simulationSuiteDummy"> Simulation Suite <span style="font-style:italic;">Dummy</span>
+			<span class="spinner">Loading...</span>
+		</a>
+		<a class="button clickable" id="createSimQualReport"> Simiarity Quality / Thresholds Training
+			<span class="spinner">Loading...</span>
+		</a>
+	</div>
+	<br>
+
+	<h4>Result</h4>
+	<div id="result" style=" width: 100%; height: 300px; border: 1px solid grey; overflow-y: auto;"></div>
+</audio>
+</body>
+</html>
